@@ -1,0 +1,73 @@
+version: '3.7'
+services:
+    backend:
+        build: ./backend
+        restart: on-failure
+        env_file: ./backend/.env
+        environment:
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            WAIT_HOSTS: mongodb:27017, redis:6379
+        devices:
+            - "/dev/ttyUSB0:/dev/ttyUSB0"
+        networks:
+            - default
+            - backend
+        ports:
+            - '4000:4000/tcp'
+        links:
+            - mongodb
+            - redis
+        healthcheck:
+          test: ["CMD", "node", "/app/healthcheck.js"]
+          interval: 1s
+          timeout: 3s
+          retries: 5
+          start_period: 600s
+    mongodb:
+        image: mongo:4-focal
+        restart: on-failure
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: banklessbackend
+            MONGO_INITDB_ROOT_PASSWORD: password
+        volumes:
+            - persist:/data/db
+        networks:
+            - backend
+        ports:
+            - '27017:27017/tcp'
+    redis:
+        image: redis:latest
+        restart: on-failure
+        command: redis-server --save 20 1 --loglevel warning
+        volumes:
+            - cache:/data
+        networks:
+            - backend
+        ports:
+            - '6379:6379/tcp'
+    frontend:
+        build: ./frontend
+        restart: on-failure
+        networks:
+            - default
+        ports:
+            - '80:4173/tcp'
+        healthcheck:
+          test:
+           - CMD-SHELL
+           - '[ "$(curl -sf http://localhost:4173 | wc -c)" -ge 100 ] || exit 1'
+          interval: 1s
+          timeout: 3s
+          retries: 5
+          start_period: 600s
+
+networks:
+    backend:
+        driver: bridge
+
+volumes:
+    cache:
+        driver: local
+    persist:
+        driver: local
