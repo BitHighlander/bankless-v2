@@ -43,6 +43,7 @@ import {
     WALLET_ROTATE_ADDRESSES,
     ATM_NO_HARDWARE,
     USB_CONNECTION,
+    USB_CONNECTION_2,
     DAI_CONTRACT,
     service
 } from './config';
@@ -60,6 +61,14 @@ let pioneer:any
 
 //bill acceptor
 let eSSP:any
+let eSSP_2:any
+let eSSP_3:any
+let ALL_HARDWARE:any = {
+    eSSP,
+    eSSP_2,
+    eSSP_3
+}
+
 let ACCEPTOR_ONLINE = false
 
 let ALL_BILLS = {
@@ -149,7 +158,7 @@ function getQuoteForRemoveLiquidity(usdOut: number): number {
     return usdOut * liquidityRate;
 }
 
-let onStartAcceptor = async function(){
+let onStartAcceptor = async function(USB_DEVICE: string){
     let tag = TAG  + " | onStartAcceptor | "
     try{
         log.info("onStartAcceptor")
@@ -170,6 +179,7 @@ let onStartAcceptor = async function(){
             fixedKey: '0123456701234567', // default: '0123456701234567'
         })
 
+
         let command = eSSP.command.bind(eSSP)
         let lastLock = Promise.resolve()
         eSSP.command = async function (...args: unknown[]) {
@@ -178,7 +188,7 @@ let onStartAcceptor = async function(){
             lastLock = new Promise<void>(resolve => resolver = resolve)
             try {
                 const result = await command(...args)
-                if (!result?.success) throw new Error(JSON.stringify(result))
+                //if (!result?.success) throw new Error(JSON.stringify(result))
                 return result
             } finally {
                 resolver()
@@ -227,14 +237,13 @@ let onStartAcceptor = async function(){
             let input = {
                 amount: amount,
                 asset: "USD",
-                sessionId: CURRENT_SESSION.sessionId
+                sessionId: CURRENT_SESSION?.sessionId
             }
-            if(CURRENT_SESSION.sessionId)credit_session(input)
+            if(CURRENT_SESSION?.sessionId)credit_session(input)
         })
         let system = os.platform()
         log.debug("system: ",system)
-        log.info(tag,"USB_CONNECTION: ",USB_CONNECTION)
-        await eSSP.open(USB_CONNECTION, serialPortConfig)
+        await eSSP.open(USB_DEVICE, serialPortConfig)
         await eSSP.command('SYNC')
         await eSSP.command('HOST_PROTOCOL_VERSION', { version: 6 })
         log.info(tag,'disabling payin')
@@ -263,16 +272,16 @@ let onStartAcceptor = async function(){
         for (let i = 0; i < channels.length; i++) {
             const channel = channels[i]
             // @TODO: country code check
-            // if (!payoutDenoms.includes(channel.value)) {
-            //     await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'cashbox', value: channel.value, country_code: channel.country_code})
-            // }
+            if (!payoutDenoms.includes(channel.value)) {
+                await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'cashbox', value: channel.value, country_code: channel.country_code})
+            }
         }
         for (let i = 0; i < channels.length; i++) {
             const channel = channels[i]
             // @TODO: country code check
-            // if (payoutDenoms.includes(channel.value)) {
-            //     await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'payout', value: channel.value, country_code: channel.country_code})
-            // }
+            if (payoutDenoms.includes(channel.value)) {
+                await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'payout', value: channel.value, country_code: channel.country_code})
+            }
         }
 
         log.info(tag,'checking routes')
@@ -499,11 +508,11 @@ let onStart = async function (){
             let tag = TAG + " | events | "
             try{
                 // log.debug(tag,"event: ",event)
-                log.info(tag,"event: ",event.payload)
+                // log.info(tag,"event: ",event)
                 
                 //create new address for session
 
-                if(event.payload && event.payload.type == "lpAdd" || event.payload.type == "lpAddAsym"){
+                if(event.payload && (event.payload.type == "lpAdd" || event.payload.type == "lpAddAsym")){
                     if(!event.payload.address) throw Error("invalid session proposial! required address of LP owner!")
                     let sessionId = uuid.generate()
                     log.info(tag,"sessionId: ",sessionId)
@@ -524,7 +533,7 @@ let onStart = async function (){
                     if(!payload.address) throw Error("Failed to generate address!")
                     clientEvents.send('message', payload)
                 }
-                if(event.payload && event.payload.type == "lpWithdrawAsym" || event.payload.type == "lpWithdraw"){
+                if(event.payload && (event.payload.type == "lpWithdrawAsym" || event.payload.type == "lpWithdraw")){
                     log.info(tag,"lpWithdrawAsym: ")
                     if(!event.payload.address) throw Error("invalid session proposial! required address of LP owner!")
                     let session = await database.getSessionByAddressOwner(event.payload.address)
@@ -625,7 +634,8 @@ let onStart = async function (){
         }
         if(!ATM_NO_HARDWARE){
             log.info("starting bill acceptor")
-            onStartAcceptor()
+            onStartAcceptor(USB_CONNECTION)
+            onStartAcceptor(USB_CONNECTION_2)
         }
         //heartbeat
         setInterval(async () => {

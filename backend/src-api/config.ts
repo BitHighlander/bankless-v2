@@ -34,5 +34,8 @@ if (WALLET_ROTATE_ADDRESSES) console.log("WALLET_ROTATE_ADDRESSES: wallet will g
 export const USB_CONNECTION = process.env['USB_CONNECTION'];
 if (!USB_CONNECTION) console.log("USB_CONNECTION: REQUIRED!");
 
+export const USB_CONNECTION_2 = process.env['USB_CONNECTION_2'];
+if (!USB_CONNECTION_2) console.log("USB_CONNECTION_2: REQUIRED!");
+
 export const DAI_CONTRACT = "0x6b175474e89094c44da98b954eedeac495271d0f"
 export const service = "https://mainnet.infura.io/v3/fb05c87983c4431baafd4600fd33de7e"
