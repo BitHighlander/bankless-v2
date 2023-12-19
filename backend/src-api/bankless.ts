@@ -217,9 +217,9 @@ let onStartAcceptor = async function(USB_DEVICE: string){
             const channel = channels[result.channel - 1]
             log.info(tag,'READ_NOTE', channel)
 
-            if (channel.value === 500) {
-              eSSP.command('REJECT_BANKNOTE')
-            }
+            // if (channel.value === 500) {
+            //   eSSP.command('REJECT_BANKNOTE')
+            // }
         })
 
         eSSP.on('NOTE_REJECTED', async result => {
@@ -279,9 +279,9 @@ let onStartAcceptor = async function(USB_DEVICE: string){
         for (let i = 0; i < channels.length; i++) {
             const channel = channels[i]
             // @TODO: country code check
-            if (payoutDenoms.includes(channel.value)) {
-                await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'payout', value: channel.value, country_code: channel.country_code})
-            }
+            // if (payoutDenoms.includes(channel.value)) {
+            //     await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'payout', value: channel.value, country_code: channel.country_code})
+            // }
         }
 
         log.info(tag,'checking routes')
