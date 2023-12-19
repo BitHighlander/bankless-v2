@@ -5,12 +5,19 @@
     "clean": "rm -R node_modules api dist src-api/routes",
     "yarn": "yarn",
     "build:web": "echo lol",
-    "build:routes": "mkdir -p src-api/routes && tsoa routes --configuration tsoa.json",
-    "build:swagger": "mkdir -p api && mkdir -p api/dist && tsoa swagger --configuration tsoa.json",
+    "build:routes": "rmdir /s /q src-api\\routes && mkdir src-api\\routes && tsoa routes --configuration tsoa.json",
+    "build:swagger": "mkdir api && mkdir api\\dist && tsoa swagger --configuration tsoa.json",
     "build:ts": "tsc -p src-api",
     "build:all": "npm run build:routes && npm run build:swagger && npm run build:ts && npm run build:web",
     "start-dev": "npm run build:all && npm run start",
-    "start": "node dist/main.js"
+    "start": "node dist\\main.js",
+    "osx:build:web": "echo lol",
+    "unix:build:routes": "mkdir -p src-api/routes && tsoa routes --configuration tsoa.json",
+    "unix:build:swagger": "mkdir -p api && mkdir -p api/dist && tsoa swagger --configuration tsoa.json",
+    "unix:build:ts": "tsc -p src-api",
+    "unix:build:all": "npm run build:routes && npm run build:swagger && npm run build:ts && npm run build:web",
+    "unix:start-dev": "npm run build:all && npm run start",
+    "unix:start": "node dist/main.js"
   },
   "dependencies": {
     "@dri/ethereum-qr-code": "^0.3.0",
