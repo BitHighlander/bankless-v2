@@ -502,7 +502,6 @@ let onStart = async function (){
         let clientEvents = new Events.Events(config)
         clientEvents.init()
         clientEvents.setUsername(config.username)
-        let events = await 
         //on event
         clientEvents.events.on('message', async (event:any) => {
             let tag = TAG + " | events | "
@@ -1330,9 +1329,10 @@ let payout_cash = async function (amount:string) {
 let send_to_address = async function (address:string,amount:number) {
     let tag = TAG + " | send_to_address | "
     try {
+        if(!CURRENT_SESSION) CURRENT_SESSION = {}
         log.debug(tag,"address:",address)
         log.debug(tag,"amount:",amount)
-        TXS_FULLFILLED.push(CURRENT_SESSION.sessionId)
+        TXS_FULLFILLED.push(CURRENT_SESSION?.sessionId || 'hacked')
         // @ts-ignore
         let value = parseInt(amount * Math.pow(10, 18)).toString()
         log.debug(tag,"value:",value)
@@ -1410,15 +1410,16 @@ let send_to_address = async function (address:string,amount:number) {
             WEB3.eth.sendSignedTransaction(result)
                 .once('transactionHash', function(hash){
                     //console.log("txHash", hash)
-                    CURRENT_SESSION.txid = hash
+                    if(CURRENT_SESSION) CURRENT_SESSION.txid = hash
                     publisher.publish("payments",JSON.stringify({txid:hash,session:CURRENT_SESSION,type:'fullfill'}))
                     return hash
                 })
                 .once('receipt', function(receipt){ log.debug("receipt", receipt) })
                 .on('confirmation', function(confNumber, receipt){
                     if(confNumber === 1){
-                        CURRENT_SESSION.status = 'fullfilled'
-                        console.log("confNumber",confNumber,"receipt",receipt) }
+                        if(CURRENT_SESSION) CURRENT_SESSION.status = 'fullfilled'
+                        console.log("confNumber",confNumber,"receipt",receipt)
+                    }
                 })
                 .on('error', function(error){ log.error("error", error) })
                 .then(function(receipt){

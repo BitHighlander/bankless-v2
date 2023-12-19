@@ -42,6 +42,11 @@ interface BodyWithdrawCash {
     amount:string
 }
 
+interface BodyWithdrawCrypto {
+    amount:string
+    address:string
+}
+
 //
 interface BodyWelook {
     url:string
@@ -520,6 +525,35 @@ export class IndexController extends Controller {
             throw new ApiError("error",503,"error: "+e.toString());
         }
     }
+
+    /*
+    * HACK send crypto
+    *
+    *
+    * */
+    @Post('/hack/sendCrypto')
+    public async sendCrypto(@Body() body: BodyWithdrawCrypto): Promise<any> {
+        let tag = TAG + " | sendCrypto | "
+        try{
+            if(!body.amount) throw Error("missing amount!")
+            if(!body.address) throw Error("missing address!")
+            if(ALLOW_HACK){
+                let session = await Bankless.sendToAddress(body.address,body.amount)
+                return session
+            } else {
+                return {success:false,error:"PRODUCTION MODE! NO HACKS ALLOWED!"}
+            }
+        } catch(e){
+            let errorResp:Error = {
+                success:false,
+                tag,
+                e
+            }
+            log.error(tag,"e: ",{errorResp})
+            throw new ApiError("error",503,"error: "+e.toString());
+        }
+    }
+
 
     /*
     * buy dai
