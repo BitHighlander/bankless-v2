@@ -1191,7 +1191,7 @@ let fullfill_order = async function (sessionId:string) {
         }
     } catch (e) {
         console.error(tag, "e: ", e)
-        throw e
+        //throw e
     }
 }
 
@@ -1424,17 +1424,17 @@ let send_to_address = async function (address:string,amount:number) {
                         publisher.publish("payments",JSON.stringify({txid:hash,session:CURRENT_SESSION,type:'fullfill'}))
                         return hash
                     })
-                    .once('receipt', function(receipt){ log.debug("receipt", receipt) })
+                    // .once('receipt', function(receipt){ log.debug("receipt", receipt) })
                     .on('confirmation', function(confNumber, receipt){
                         if(confNumber === 1){
                             if(CURRENT_SESSION) CURRENT_SESSION.status = 'fullfilled'
                             console.log("confNumber",confNumber,"receipt",receipt)
                         }
                     })
-                    .on('error', function(error){ log.error("error", error) })
-                    .then(function(receipt){
-                        console.log("trasaction mined!", receipt);
-                    });    
+                    // .on('error', function(error){ log.error("error", error) })
+                    // .then(function(receipt){
+                    //     console.log("trasaction mined!", receipt);
+                    // });    
             }catch(e){
                 console.error("Failed to broadcast: ",e)
             }
