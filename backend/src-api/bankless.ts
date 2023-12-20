@@ -43,7 +43,7 @@ import {
     WALLET_ROTATE_ADDRESSES,
     ATM_NO_HARDWARE,
     USB_CONNECTION,
-    USB_CONNECTION_2,
+    // USB_CONNECTION_2,
     DAI_CONTRACT,
     service
 } from './config';
@@ -634,7 +634,7 @@ let onStart = async function (){
         if(!ATM_NO_HARDWARE){
             log.info("starting bill acceptor")
             onStartAcceptor(USB_CONNECTION)
-            onStartAcceptor(USB_CONNECTION_2)
+            // onStartAcceptor(USB_CONNECTION_2)
         }
         //heartbeat
         setInterval(async () => {
