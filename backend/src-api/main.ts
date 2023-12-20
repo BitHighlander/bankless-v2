@@ -59,8 +59,8 @@ subscriber.on('message', async function (channel, payloadS) {
             payloadS = JSON.stringify(payload)
         }
         //
-        console.log("message: ",payloadS)
-        io.emit('message', payloadS);
+        console.log("message message: ",payloadS)
+        //io.emit('message', payloadS);
         // io.emit(channel, payloadS);
 
     } catch (e) {
@@ -139,7 +139,7 @@ io.on('connection', async function(socket){
     socket.on('join', async function(msg){
         log.info(tag,'**** Join event! : ', typeof(msg));
         //if(typeof(msg) === "string") msg = JSON.parse(msg)
-        log.info(tag,"message: ",msg)
+        log.info(tag,"join message: ",msg)
 
         let queryKey = msg.queryKey
         if(queryKey && msg.username){
