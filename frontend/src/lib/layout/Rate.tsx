@@ -15,19 +15,18 @@ const Onramp = () => {
           "http://localhost:4000/api/v1/" + "status"
       );
       setSessionId("");
-      if(status.data.sessionId){
-        //fullfill
-        const body = {
-          sessionId
-        };
-        let submitResp = await axios.post(
-            "http://127.0.0.1:4000/api/v1/clear",
-            body
-        );
-        submitResp = submitResp.data
-        // eslint-disable-next-line no-console
-        console.log("submitResp: ", submitResp);
-      }
+      
+      const bodyClear = {
+        sessionId:"test"
+      };
+      //clear session
+      let respClear = await axios.post(
+          "http://127.0.0.1:4000/api/v1/clear",
+          bodyClear
+      );
+      respClear = respClear.data
+      console.log("respClear: ",respClear)
+
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

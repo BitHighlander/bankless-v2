@@ -762,7 +762,6 @@ module.exports = {
     },
     clear: async function (sessionId:string) {
         clear_session()
-        await countBills()
         return true;
     },
 }
@@ -784,6 +783,9 @@ let clear_session = function () {
         }
         if(!ATM_NO_HARDWARE){
             eSSP.disable()
+        }
+        if(ATM_NO_HARDWARE){
+            countBills()
         }
     } catch (e) {
         console.error(tag, "e: ", e)
@@ -1142,6 +1144,7 @@ let fullfill_order = async function (sessionId:string) {
                 TOTAL_CASH,
                 TOTAL_DAI
             })
+            clear_session()
             return "LP:REMOVE:USD"+resultRemoval.dispenseUSD+":DAI"+resultRemoval.dispenseDAI+":TXID:PLACEHOLDER"
         }
         if(CURRENT_SESSION.type === 'lpWithdrawAsym'){
@@ -1177,7 +1180,7 @@ let fullfill_order = async function (sessionId:string) {
             let totalDai = amountDAI + convertedDai
             log.info("totalDai: ",totalDai)
             capTable.sync(TOTAL_CASH, TOTAL_DAI)
-            
+            clear_session()
             //if not fake payments
             if(!WALLET_FAKE_PAYMENTS){
                 try{

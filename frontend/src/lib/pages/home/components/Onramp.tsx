@@ -192,7 +192,18 @@ const Onramp = ({ sessionId, setLockTabs }) => {
       );
       submitRespFullfill = submitRespFullfill.data
       console.log("submitRespFullfill: ", submitRespFullfill);
-
+      
+      const bodyClear = {
+        sessionId:"test"
+      };
+      //clear session
+      let respClear = await axios.post(
+          "http://127.0.0.1:4000/api/v1/clear",
+          bodyClear
+      );
+      respClear = respClear.data
+      console.log("respClear: ",respClear)
+      
       setSending(true)
     } catch (e) {
       // eslint-disable-next-line no-console
