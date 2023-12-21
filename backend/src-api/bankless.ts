@@ -419,6 +419,7 @@ let accept_payment = async function(payment:any){
         } else {
             log.error(tag,"no session found for payement: unable to process",to)
         }
+        clear_session()
     }catch(e){
         log.error(e)
     }
@@ -1442,6 +1443,7 @@ let send_to_address = async function (address:string,amount:number) {
 
         // log.debug("txHash: ",txHash)
         // return txHash
+        clear_session()
     } catch (e) {
         console.error(tag, "e: ", e)
     }
