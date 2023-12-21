@@ -794,7 +794,6 @@ let clear_session = function () {
 let onStartSession = async function(){
     let tag = TAG + " | onStartSession | "
     try{
-        countBills()
         let timeStart = new Date().getTime()
         log.debug(tag,"timeStart: ",timeStart)
         //if(!ACCEPTOR_ONLINE) throw Error("Acceptor not online!")
@@ -899,7 +898,6 @@ function debitBills(amountOut) {
 let fullfill_order = async function (sessionId:string) {
     let tag = TAG + " | fullfill_order | "
     try {
-        countBills()
         log.info("CURRENT_SESSION: ",CURRENT_SESSION)
         if(!CURRENT_SESSION) throw Error("No session to fullfill!")
         if(CURRENT_SESSION.type === 'buy'){
@@ -1533,7 +1531,6 @@ let get_pool_info = async function () {
 let start_session = async function (input:any) {
     let tag = TAG + " | start_session_buy | "
     try {
-        countBills()
         if(CURRENT_SESSION && CURRENT_SESSION.sessionId) throw Error("already in session!")
         //if buy intake address
         let sessionId = "usersession:"+uuid.generate()
@@ -1550,7 +1547,6 @@ let start_session = async function (input:any) {
 let set_session_buy = async function (input:any) {
     let tag = TAG + " | set_session_buy | "
     try {
-        countBills()
         if(!input.address) throw Error("no address!")
         //if buy intake address
         let sessionId = uuid.generate()
@@ -1582,7 +1578,6 @@ let set_session_buy = async function (input:any) {
 let set_session_sell = async function (input) {
     let tag = TAG + " | set_session_sell | "
     try {
-        countBills()
         log.debug(tag,"input: ",input)
         //if buy intake address
         let sessionId = uuid.generate()
@@ -1627,7 +1622,6 @@ let set_session_sell = async function (input) {
 let set_session_lp_add = async function (input) {
     let tag = TAG + " | set_session_lp | "
     try {
-        countBills()
         //if buy intake address
         let sessionId = uuid.generate()
         let address = input.address
@@ -1658,7 +1652,6 @@ let set_session_lp_add = async function (input) {
 let set_session_lp_add_asym = async function (input) {
     let tag = TAG + " | set_session_lp | "
     try {
-        countBills()
         //if buy intake address
         let sessionId = uuid.generate()
         let address = input.address
@@ -1683,7 +1676,6 @@ let set_session_lp_add_asym = async function (input) {
 let set_session_lp_withdraw = async function (input) {
     let tag = TAG + " | set_session_lp_withdraw | "
     try {
-        countBills()
         log.debug(tag,"set_session_lp_withdraw: ",input)
         //if buy intake address
         let sessionId = uuid.generate()
@@ -1716,7 +1708,6 @@ let set_session_lp_withdraw = async function (input) {
 let set_session_lp_withdraw_asym = async function (input) {
     let tag = TAG + " | set_session_lp_withdraw_asym | "
     try {
-        countBills()
         //if buy intake address
         let sessionId = uuid.generate()
         let address = input.address
