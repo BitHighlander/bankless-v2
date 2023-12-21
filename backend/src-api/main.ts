@@ -60,7 +60,7 @@ subscriber.on('message', async function (channel, payloadS) {
         }
         //
         console.log("message message: ",payloadS)
-        //io.emit('message', payloadS);
+        io.emit('message', payloadS);
         // io.emit(channel, payloadS);
 
     } catch (e) {
