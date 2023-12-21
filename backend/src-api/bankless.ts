@@ -769,18 +769,7 @@ module.exports = {
 let clear_session = function () {
     let tag = TAG + " | clear_session | "
     try {
-        CURRENT_SESSION = {
-            sessionId: null,
-            type: null,
-            address: null,
-            txid: null,
-            status: null,
-            amountIn: null,
-            amountOut: null,
-            SESSION_FUNDING_USD: 0,
-            SESSION_FUNDING_DAI: 0,
-            SESSION_FULLFILLED: false,
-        }
+        CURRENT_SESSION = null
         if(!ATM_NO_HARDWARE){
             eSSP.disable()
         }
