@@ -770,7 +770,6 @@ module.exports = {
 let clear_session = function () {
     let tag = TAG + " | clear_session | "
     try {
-        
         CURRENT_SESSION = {
             sessionId: null,
             type: null,
@@ -786,7 +785,6 @@ let clear_session = function () {
         if(!ATM_NO_HARDWARE){
             eSSP.disable()
         }
-        countBills()
     } catch (e) {
         console.error(tag, "e: ", e)
         throw e
