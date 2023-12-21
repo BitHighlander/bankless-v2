@@ -273,7 +273,11 @@ let onStartAcceptor = async function(USB_DEVICE: string){
             const channel = channels[i]
             // @TODO: country code check
             if (!payoutDenoms.includes(channel.value)) {
+                log.info("setting CASHBOX route for channel: ",channel.value)
                 await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'cashbox', value: channel.value, country_code: channel.country_code})
+            } else {
+                log.info("setting PAYOUT route for channel: ",channel.value)
+                await eSSP.command('SET_DENOMINATION_ROUTE', {route: 'payout', value: channel.value, country_code: channel.country_code})
             }
         }
         for (let i = 0; i < channels.length; i++) {
