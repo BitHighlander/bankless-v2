@@ -147,6 +147,7 @@ const Onramp = ({ sessionId, setLockTabs }) => {
 
   const onCheckDollars = async function () {
     try {
+      console.log("onCheckDollars checkpoint! ")
       // eslint-disable-next-line no-console
       //get last session
       let status = await axios.get(
@@ -154,8 +155,10 @@ const Onramp = ({ sessionId, setLockTabs }) => {
       );
       status = status.data
       console.log("status: ",status)
+      console.log("status: ",status?.session)
       // @ts-ignore
       if(status && status.session && status.session.SESSION_FUNDING_USD){
+        console.log("CHECKPOINT FUNDED")
         // @ts-ignore
         setUsd(status.session.SESSION_FUNDING_USD)
         console.log("onCheckDollars: ");
@@ -193,16 +196,16 @@ const Onramp = ({ sessionId, setLockTabs }) => {
       submitRespFullfill = submitRespFullfill.data
       console.log("submitRespFullfill: ", submitRespFullfill);
       
-      const bodyClear = {
-        sessionId:"test"
-      };
-      //clear session
-      let respClear = await axios.post(
-          "http://127.0.0.1:4000/api/v1/clear",
-          bodyClear
-      );
-      respClear = respClear.data
-      console.log("respClear: ",respClear)
+      // const bodyClear = {
+      //   sessionId:"test"
+      // };
+      // //clear session
+      // let respClear = await axios.post(
+      //     "http://127.0.0.1:4000/api/v1/clear",
+      //     bodyClear
+      // );
+      // respClear = respClear.data
+      // console.log("respClear: ",respClear)
       
       setSending(true)
     } catch (e) {
@@ -222,7 +225,7 @@ const Onramp = ({ sessionId, setLockTabs }) => {
       // @ts-ignore
       if(status.session && status.session.type === 'buy'){
         // @ts-ignore
-        setSessionId(status.session.sessionId)
+        // setSessionId(status.session.sessionId)
         setSessionTypeSelected(true)
       }
     } catch (e) {
