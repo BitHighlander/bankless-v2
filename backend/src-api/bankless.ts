@@ -101,7 +101,15 @@ Object.keys(ALL_BILLS).forEach(key => {
 TOTAL_CASH = totalCash
 capTable.sync(TOTAL_CASH, TOTAL_DAI)
 
-
+let CASH_SETTINGS = {
+    "1": null,
+    "2": null,
+    "5": null,
+    "10":  null,
+    "20":  null,
+    "50":  null,
+    "100":  null,
+}
 //
 let ethEvents
 
@@ -290,7 +298,9 @@ let onStartAcceptor = async function(USB_DEVICE: string){
 
         log.info(tag,'checking routes')
         for (const channel of channels) {
-            log.info(tag,channel, (await eSSP.command('GET_DENOMINATION_ROUTE', {value: channel.value, country_code: channel.country_code}))?.info)
+            let result = await eSSP.command('GET_DENOMINATION_ROUTE', {value: channel.value, country_code: channel.country_code})
+            log.info(tag,"GET_DENOMINATION_ROUTE: ",channel, result)
+            CASH_SETTINGS[channel.value/100] = result.info
         }
 
         log.info(tag,'enable refill mode')
@@ -1504,6 +1514,7 @@ let get_status = async function () {
             totalUsd: totalSelected,
             cash: ALL_BILLS,
             lptokens:capTable.tokens(),
+            CASH_SETTINGS,
             cap
         }
         return output
