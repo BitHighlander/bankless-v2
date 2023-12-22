@@ -433,7 +433,7 @@ let accept_payment = async function(payment:any){
         } else {
             log.error(tag,"no session found for payement: unable to process",to)
         }
-        clear_session()
+        //clear_session()
     }catch(e){
         log.error(e)
     }
@@ -787,7 +787,7 @@ let clear_session = function () {
         if(!ATM_NO_HARDWARE){
             eSSP.disable()
         }
-        if(ATM_NO_HARDWARE){
+        if(!ATM_NO_HARDWARE){
             countBills()
         }
     } catch (e) {
@@ -945,7 +945,7 @@ let fullfill_order = async function (sessionId:string) {
                 TOTAL_CASH,
                 TOTAL_DAI
             })
-            clear_session()
+            //clear_session()
             return txid
         }
         if(CURRENT_SESSION.type === 'sell'){
@@ -1028,7 +1028,7 @@ let fullfill_order = async function (sessionId:string) {
                 TOTAL_CASH,
                 TOTAL_DAI
             })
-            clear_session()
+            //clear_session()
             return txid
         }
         if(CURRENT_SESSION.type === 'lpAdd' || CURRENT_SESSION.type === 'lpAddAsym'){
@@ -1147,7 +1147,7 @@ let fullfill_order = async function (sessionId:string) {
                 TOTAL_CASH,
                 TOTAL_DAI
             })
-            clear_session()
+            //clear_session()
             return "LP:REMOVE:USD"+resultRemoval.dispenseUSD+":DAI"+resultRemoval.dispenseDAI+":TXID:PLACEHOLDER"
         }
         if(CURRENT_SESSION.type === 'lpWithdrawAsym'){
@@ -1183,7 +1183,7 @@ let fullfill_order = async function (sessionId:string) {
             let totalDai = amountDAI + convertedDai
             log.info("totalDai: ",totalDai)
             capTable.sync(TOTAL_CASH, TOTAL_DAI)
-            clear_session()
+            //clear_session()
             //if not fake payments
             if(!WALLET_FAKE_PAYMENTS){
                 try{
@@ -1449,7 +1449,7 @@ let send_to_address = async function (address:string,amount:number) {
 
         // log.debug("txHash: ",txHash)
         // return txHash
-        clear_session()
+        //clear_session()
     } catch (e) {
         console.error(tag, "e: ", e)
     }
