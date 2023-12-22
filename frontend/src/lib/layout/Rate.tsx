@@ -8,7 +8,6 @@ const Onramp = () => {
   
   const clearSession = async function () {
     try {
-      window.location.reload();
       // eslint-disable-next-line no-console
       console.log("onDone: ");
       const status = await axios.get(
@@ -26,7 +25,7 @@ const Onramp = () => {
       );
       respClear = respClear.data
       console.log("respClear: ",respClear)
-
+      window.location.reload();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
