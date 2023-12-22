@@ -37,5 +37,12 @@ if (!USB_CONNECTION) console.log("USB_CONNECTION: REQUIRED!");
 // export const USB_CONNECTION_2 = process.env['USB_CONNECTION_2'];
 // if (!USB_CONNECTION_2) console.log("USB_CONNECTION_2: REQUIRED!");
 
-export const DAI_CONTRACT = "0x6b175474e89094c44da98b954eedeac495271d0f"
-export const service = "https://mainnet.infura.io/v3/fb05c87983c4431baafd4600fd33de7e"
+// export const DAI_CONTRACT = "0x6b175474e89094c44da98b954eedeac495271d0f"
+// export const service = "https://mainnet.infura.io/v3/fb05c87983c4431baafd4600fd33de7e"
+
+// export const DAI_CONTRACT = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"
+// export const service = "https://avalanche.drpc.org"
+
+//https://polygon.llamarpc.com
+export const DAI_CONTRACT = "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+export const service = "https://polygon.rpc.blxrbdn.com"

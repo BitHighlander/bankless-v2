@@ -478,8 +478,8 @@ let sub_for_payments = async function(){
                 blockchain:"ethereum",
                 caip:"eip155:1/slip44:60",
                 type:"blockbook",
-                service:"https://indexer.ethereum.shapeshift.com",
-                websocket:"wss://indexer.ethereum.shapeshift.com/websocket"
+                service:"https://indexer.polygon.shapeshift.com",
+                websocket:"wss://indexer.polygon.shapeshift.com/websocket"
             }
         ]
         //sub to main address
@@ -834,9 +834,10 @@ let onStartSession = async function(){
         //console.log("address: ",address)
         const newContract = new WEB3.eth.Contract(minABI, DAI_CONTRACT);
         const decimals = await newContract.methods.decimals().call();
-        //console.log("decimals: ",decimals)
+        console.log("decimals: ",decimals)
+        console.log("address: ",address)
         const balanceBN = await newContract.methods.balanceOf(address).call()
-        //console.log("input: balanceBN: ",balanceBN)
+        console.log("input: balanceBN: ",balanceBN)
         // @ts-ignore
         let tokenBalance = parseInt(balanceBN/Math.pow(10, decimals))
         if(!WALLET_FAKE_BALANCES_DAI){

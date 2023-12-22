@@ -32,7 +32,6 @@ const Onramp = () => {
     }
   };
 
-
   const onStart = async function () {
     try {
       const status = await axios.get(
