@@ -19,6 +19,7 @@ const Onramp = () => {
         sessionId:"test"
       };
       //clear session
+      console.log("MAKING THE CLEAR CALL!------")
       let respClear = await axios.post(
           "http://127.0.0.1:4000/api/v1/clear",
           bodyClear

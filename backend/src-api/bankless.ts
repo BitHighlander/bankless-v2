@@ -390,7 +390,7 @@ let accept_payment = async function(payment:any){
         let txid = payment.tx.txid
         let from = payment.tx.tokenTransfers[0].from
         let to = payment.tx.tokenTransfers[0].to.toLowerCase()
-        let amount = payment.tx.tokenTransfers[0].value / 10**18
+        let amount = payment.tx.tokenTransfers[0].value / 10**6
         let contract = payment.tx.tokenTransfers[0].contract
         if(contract.toLowerCase() !== DAI_CONTRACT)throw Error("Incorrect token!")
         log.info(tag,"params: ",{
@@ -782,14 +782,18 @@ module.exports = {
 
 let clear_session = function () {
     let tag = TAG + " | clear_session | "
+    log.info(tag,"INSIDE BANKLESS clear_session!------")
     try {
         CURRENT_SESSION = null
+        // if(!ATM_NO_HARDWARE){
+        //     log.info(tag,"COUNT BILLS------")
+        //     countBills()
+        // }
         if(!ATM_NO_HARDWARE){
+            log.info(tag,"DISABLE BILL ACCEPTOR------")
             eSSP.disable()
         }
-        if(!ATM_NO_HARDWARE){
-            countBills()
-        }
+
     } catch (e) {
         console.error(tag, "e: ", e)
         throw e
@@ -1270,7 +1274,7 @@ const credit_session = async function (input) {
             }
         }
 
-        if (input.asset === 'DAI') {
+        if (input.asset === 'USDT') {
             CURRENT_SESSION.SESSION_FUNDING_DAI = (CURRENT_SESSION.SESSION_FUNDING_DAI ?? 0) + parseFloat(input.amount);
             if (WALLET_FAKE_PAYMENTS) {
                 TOTAL_DAI = TOTAL_DAI + parseFloat(input.amount);
@@ -1351,7 +1355,7 @@ let send_to_address = async function (address:string,amount:number) {
         log.debug(tag,"amount:",amount)
         TXS_FULLFILLED.push(CURRENT_SESSION?.sessionId || 'hacked')
         // @ts-ignore
-        let value = parseInt(amount * Math.pow(10, 18)).toString()
+        let value = parseInt(amount * Math.pow(10, 6)).toString()
         log.debug(tag,"value:",value)
         let addressFrom = await signer.getAddress(WALLET_MAIN)
         //web3 get nonce
@@ -1413,7 +1417,7 @@ let send_to_address = async function (address:string,amount:number) {
             "from": addressFrom,
             "to": DAI_CONTRACT,
             "data": tokenData,
-            chainId:1,
+            chainId:137,
         }
         log.debug("input: ",input)
         //signer
