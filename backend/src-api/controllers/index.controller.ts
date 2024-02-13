@@ -774,6 +774,7 @@ export class IndexController extends Controller {
     public async clear(@Body() body: BodyFullfill): Promise<any> {
         let tag = TAG + " | clear | "
         try{
+            log.info(tag,"STARTING CLEAR!------")
             log.info(tag,"body: ",body)
             if(!body.sessionId) throw Error("sessionId is required!")
             let session = await Bankless.clear(body.sessionId)
