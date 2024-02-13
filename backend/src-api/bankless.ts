@@ -785,14 +785,10 @@ let clear_session = function () {
     log.info(tag,"INSIDE BANKLESS clear_session!------")
     try {
         CURRENT_SESSION = null
-        /*if(!ATM_NO_HARDWARE){
+        if(!ATM_NO_HARDWARE){
            log.info(tag,"COUNT BILLS------")
              countBills()
         }
-        if(!ATM_NO_HARDWARE){
-            log.info(tag,"DISABLE BILL ACCEPTOR------")
-            eSSP.disable()
-        }*/
     } catch (e) {
         console.error(tag, "e: ", e)
         throw e
