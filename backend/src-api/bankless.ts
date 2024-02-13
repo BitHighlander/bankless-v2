@@ -785,15 +785,14 @@ let clear_session = function () {
     log.info(tag,"INSIDE BANKLESS clear_session!------")
     try {
         CURRENT_SESSION = null
-        // if(!ATM_NO_HARDWARE){
-        //     log.info(tag,"COUNT BILLS------")
-        //     countBills()
-        // }
+        /*if(!ATM_NO_HARDWARE){
+           log.info(tag,"COUNT BILLS------")
+             countBills()
+        }
         if(!ATM_NO_HARDWARE){
             log.info(tag,"DISABLE BILL ACCEPTOR------")
             eSSP.disable()
-        }
-
+        }*/
     } catch (e) {
         console.error(tag, "e: ", e)
         throw e
@@ -950,6 +949,10 @@ let fullfill_order = async function (sessionId:string) {
                 TOTAL_CASH,
                 TOTAL_DAI
             })
+            if(!ATM_NO_HARDWARE){
+                log.info(tag,"DISABLE BILL ACCEPTOR------")
+                eSSP.disable()
+            }
             //clear_session()
             return txid
         }
