@@ -262,7 +262,7 @@ const Onramp = ({ sessionId, setLockTabs }) => {
 
   return (
     <Grid textAlign="center" gap={2}>
-      Buy DAI
+      Buy TRUEUSD
       {sessionTypeSelected ? (
         <div>
           {sending ? (<div>

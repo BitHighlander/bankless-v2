@@ -37,5 +37,5 @@ if (!USB_CONNECTION) console.log("USB_CONNECTION: REQUIRED!");
 // export const USB_CONNECTION_2 = process.env['USB_CONNECTION_2'];
 // if (!USB_CONNECTION_2) console.log("USB_CONNECTION_2: REQUIRED!");
 
-export const DAI_CONTRACT = "0x6b175474e89094c44da98b954eedeac495271d0f"
-export const service = "https://mainnet.infura.io/v3/fb05c87983c4431baafd4600fd33de7e"
+export const DAI_CONTRACT = "0x40af3827F39D0EAcBF4A168f8D4ee67c121D11c9"
+export const service = "https://bsc-rpc.publicnode.com"
